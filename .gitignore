@@ -1,0 +1,16 @@
+#ignorethis
+.HA_VERSION
+.storage
+.cloud
+secrets.yaml
+zwcfg_0xd7dcbd19.xml
+zwcfg_0xfa50b246.xml
+home-assistant_v2.db
+home-assistant_v2.db-shm
+home-assistant_v2.db-wal
+home-assistant.log
+OZW_Log.txt
+
+
+#do not ignore
+!.gitignore
