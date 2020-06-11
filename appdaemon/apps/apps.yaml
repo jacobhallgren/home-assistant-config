@@ -1,0 +1,41 @@
+Washer_room:
+  module: motion_lights
+  class: MotionLights
+  motion_sensor: binary_sensor.presence_washerroom
+  light: switch.shelly_washer
+  timeout: 300
+
+WC_1st:
+  module: motion_lights
+  class: MotionLights
+  motion_sensor: binary_sensor.fibaro_wc_1st_motion_sensor_sensor
+  light: switch.shelly_wc1st
+  timeout: 300
+
+WC_2nd:
+  module: motion_lights
+  class: MotionLights
+  motion_sensor: binary_sensor.fibaro_wc_2nd_motion_sensor_sensor
+  light: switch.shelly_wc2nd
+  timeout: 300
+
+
+Storageroom:
+  module: motion_lights
+  class: MotionLights
+  motion_sensor: binary_sensor.fibaro_storageroom_motion_sensor_sensor
+  light: switch.shelly_storage
+  timeout: 300
+
+
+Kitchen:
+  module: kitchen
+  class: KitchenToggle
+
+# Shelly:
+#   module: shelly
+#   class: Shelly
+
+Keyfob:
+  module: keyfob
+  class: FibaroKeyfob

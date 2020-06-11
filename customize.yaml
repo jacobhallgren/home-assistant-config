@@ -1,0 +1,6 @@
+light.aeon_labs_zw121_led_strip_level:
+  supported_features: 145
+light.tv_bench_level:
+  supported_features: 145
+light.aeon_labs_zw098_led_bulb_level:
+  supported_features: 145

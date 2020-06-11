@@ -1,0 +1,63 @@
+#- id: '25845610'
+  - name: movie
+    entities:
+      switch.shelly_sofa_left: off
+      switch.shelly_sofa_right: off
+      switch.mirror_light: off
+      light.kitchen_bench:
+        state: on
+        brightness: 128
+      light.tv_bench_level:
+        state: on
+        brightness: 33
+  #- id: '25396578'
+  - name: onscene
+    entities:
+      switch.shelly_sofa_right: on
+      switch.shelly_sofa_left:  on
+      light.window_matsal_level:
+        state: on
+        brigthness: 255
+      light.window_lamp_livingroom_level:
+        state: on
+        brigthness: 255
+      switch.mirror_light: on
+      switch.clothes_lamp_switch: on
+      switch.stair_light_switch: on
+      switch.shelly_elfa: on
+      light.shelly_window_bedroom:
+        state: on
+        brightness: 254
+      light.kitchen_bench:
+        state: on
+        brightness: 254
+      switch.shelly_2nd_tv_left: on
+      switch.shelly_2nd_tv_right: on
+      light.tv_bench_level:
+        state: on
+        brightness: 93
+
+
+  #- id: '25278135'
+  - name: offscene
+    entities:
+      switch.shelly_sofa_right: off
+      switch.shelly_sofa_left:  off
+      light.window_matsal_level: off
+      light.window_lamp_livingroom_level: off
+      switch.mirror_light: off
+      switch.clothes_lamp_switch: off
+      switch.stair_light_switch: off
+      switch.shelly_elfa: off
+      light.shelly_window_bedroom: off
+      light.kitchen_bench: off
+      switch.shelly_2nd_tv_left: off
+      switch.shelly_2nd_tv_right: off
+      light.ceiling_livingroom_level: off
+      light.shelly_ceiling_bedroom: off
+      light.matsal_celing_level: off
+      switch.fibaro_double_switch_tv_2nd_switch: off
+      switch.fibaro_double_window_lamp: off
+      light.kitchen_spots: off
+      light.tv_bench_level: off
+      light.kitchen_lamp_level: off

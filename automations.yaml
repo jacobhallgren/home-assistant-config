@@ -1,0 +1,119 @@
+- alias: Start HomeKit
+  trigger:
+  - platform: event
+    event_type: zwave.network_ready
+  - platform: event
+    event_type: zwave.network_complete
+  - platform: event
+    event_type: zwave.network_complete_some_dead
+  action:
+  - service: homekit.start
+  
+  
+# - alias: Turn on washer light when there is movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.presence_8
+#     to: 'on'
+#   action:
+#     service: switch.turn_on
+#     entity_id: 
+#       - switch.shelly_shsw_1_770a37
+
+# - alias: Turn off washer light 10 minutes after last movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.presence_8
+#     to: 'off'
+#     for:
+#       minutes: 5
+#   action:
+#     service: switch.turn_off
+#     entity_id: 
+#       - switch.shelly_shsw_1_770a37
+
+- alias: turn on bolean when alarm set to armed
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.dressyrvagen_alarm
+    to: 'armed_away'
+  action:
+    service: input_boolean.turn_on
+    entity_id: input_boolean.testswitch
+
+
+- alias: turn off bolean when alarm set to disarmed
+  trigger:
+    entity_id: alarm_control_panel.dressyrvagen_alarm
+    from: 'armed_away'
+    platform: state  
+    to: 'disarmed'
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.testswitch
+
+# - alias: Turn on storage light when there is movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.fibaro_system_fgms001_zw5_motion_sensor_sensor
+#     to: 'on'
+#   action:
+#     service: switch.turn_on
+#     entity_id: 
+#       - switch.shelly_shsw_1_769738
+
+# - alias: Turn off storage light 10 minutes after last movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.fibaro_system_fgms001_zw5_motion_sensor_sensor
+#     to: 'off'
+#     for:
+#       minutes: 5
+#   action:
+#     service: switch.turn_off
+#     entity_id: 
+#       - switch.shelly_shsw_1_769738
+
+# - alias: Turn on bathroom1st light when there is movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.fibaro_system_fgms001_zw5_motion_sensor_sensor_2
+#     to: 'on'
+#   action:
+#     service: switch.turn_on
+#     entity_id: 
+#       - switch.shelly_shsw_1_770c53
+
+# - alias: Turn off bathroom1st light 10 minutes after last movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.fibaro_system_fgms001_zw5_motion_sensor_sensor_2
+#     to: 'off'
+#     for:
+#       minutes: 5
+#   action:
+#     service: switch.turn_off
+#     entity_id: 
+#       - switch.shelly_shsw_1_770c53
+
+# - alias: Turn on bathroom2nd light when there is movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.fibaro_system_fgms001_zw5_motion_sensor_sensor_4
+#     to: 'on'
+#   action:
+#     service: switch.turn_on
+#     entity_id: 
+#       - switch.shelly_shsw_1_55ea69
+
+# - alias: Turn off bathroom2ndlight 10 minutes after last movement
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.fibaro_system_fgms001_zw5_motion_sensor_sensor_4
+#     to: 'off'
+#     for:
+#       minutes: 5
+#   action:
+#     service: switch.turn_off
+#     entity_id: 
+#       - switch.shelly_shsw_1_55ea69
