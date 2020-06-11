@@ -11,6 +11,7 @@ home-assistant_v2.db-wal
 home-assistant.log
 OZW_Log.txt
 pyozw.sqlite
+configuration.yaml
 
 #do not ignore
 !.gitignore
