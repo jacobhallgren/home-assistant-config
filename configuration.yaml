@@ -1,0 +1,164 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+http:
+ server_port: 80
+ base_url: https://asacore-rtr-vpn02.asacore.net:80
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+shelly:
+  sensors:
+    - all
+
+
+
+#homekit
+
+
+homekit:
+  auto_start: false
+  filter:
+   include_domains:
+      - media_player
+      - switch
+      - input_boolean
+      - cover
+      - light
+      - alarm_control_panel
+   include_entities:
+      - sensor.datorrum_temperature
+      - sensor.vardagsrum_temperature
+      - sensor.tvattmaskinen_minuter_kvar_homekit
+      - sensor.sovrum_temperature
+      - binary_sensor.tvattmaskinen_klar_homekit
+      - binary_sensor.mailbox
+   exclude_entities:
+      - switch.fibaro_system_fgs213_switch_switch
+      - switch.allrum
+      - switch.fibaro_system_fgs213_switch_switch_2
+      - switch.fibaro_system_fgs213_switch_switch_3
+      - media_player.ue55js9005_ue55js9000
+      - media_player.samsung_soundbar_hw_j7500
+      - light.kitchen_big_bench
+      - light.kitchen_small_bench
+      - cover.rollerblind      
+  entity_config:
+   binary_sensor.mailbox:
+      linked_battery_sensor: sensor.aeotec_mailbox_sensor_battery_level
+      low_battery_threshold: 31
+#Verisure
+verisure:
+  username: !secret verisureuser
+  password: !secret verisurepass
+  
+ #Led strip support
+ 
+homeassistant:
+  customize: !include customize.yaml
+  
+  
+
+light:
+  - platform: group
+    name: kitchen_bench
+    entities:
+      - light.kitchen_big_bench
+      - light.kitchen_small_bench
+      
+sensor:
+  - platform: rest
+    name: tvattmaskin_tid_klar
+    value_template: '{{ value_json.components.main.washerOperatingState.completionTime.value }}'
+    resource: https://api.smartthings.com/v1/devices/8c072516-a256-88c4-5cf2-41d8d46eb291/status
+    headers:
+      Authorization: !secret samsungwasher
+    scan_interval: 60
+    
+  - platform: rest
+    name: tvattmaskin_status
+    value_template: '{{ "Tvättmaskinen" }}'
+    json_attributes:
+    - components
+    resource: https://api.smartthings.com/v1/devices/8c072516-a256-88c4-5cf2-41d8d46eb291/status
+    headers:
+     Authorization: !secret samsungwasher
+    scan_interval: 60
+   
+  - platform: template
+    sensors:
+      tvattmaskin_status_riktiga:
+       value_template: >
+         {% set machine_status = states.sensor.tvattmaskin_status.attributes.components.main.washerOperatingState.machineState.value %} 
+         {{ machine_status }}
+  - platform: template
+    sensors:
+      tvattmaskin_minuter_kvar:
+        friendly_name: Tvättmaskin
+        value_template: >
+         {% if (float(float(as_timestamp(states('sensor.tvattmaskin_tid_klar'))-as_timestamp(now()))/60) | round(0)) > 0 and states.sensor.tvattmaskin_status_riktiga.state == 'run' %}
+         {{ float(float(as_timestamp(states('sensor.tvattmaskin_tid_klar'))-as_timestamp(now()))/60) | round(0)}}
+         {% else %}
+          {{ float(0.0) | round(0)}}
+         {% endif %}
+        unit_of_measurement: "min"
+        
+  - platform: template
+    sensors:
+      tvattmaskinen_minuter_kvar_homekit:
+        friendly_name: Tvättmaskinen
+        device_class: temperature
+        value_template:  '{{ float(states.sensor.tvattmaskin_minuter_kvar.state) }}'
+        unit_of_measurement: "°C"
+        
+  - platform: systemmonitor
+    resources:
+      - type: memory_use_percent
+      - type: processor_use
+      - type: disk_use_percent
+        arg: /
+        
+binary_sensor:
+  - platform: template
+    sensors: 
+      tvattmaskinen_klar_homekit:
+        friendly_name: "Tvättmaskinen klar"
+        device_class: occupancy
+        value_template: >
+          {{ states('sensor.tvattmaskinen_minuter_kvar_homekit') | float == 0.0 }}
+          
+   
+  - platform: template
+    sensors:
+      mailbox:
+        friendly_name: "Mailbox"
+        device_class: door
+        value_template: "{{ is_state('sensor.aeon_labs_zw120_door_window_sensor_gen5_access_control', '22') }}"
+  
+  - platform: ping
+    host: 10.46.2.1
+    name: "ping"
+    count: 2
+    scan_interval: 1
+        
+input_boolean:
+    testmotion:
+     name: testmotion
+     initial: off
+    
+    testswitch:
+     name: testswitch
+     initial: off
+
