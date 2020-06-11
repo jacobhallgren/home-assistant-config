@@ -10,7 +10,7 @@ home-assistant_v2.db-shm
 home-assistant_v2.db-wal
 home-assistant.log
 OZW_Log.txt
-
+pyozw.sqlite
 
 #do not ignore
 !.gitignore
