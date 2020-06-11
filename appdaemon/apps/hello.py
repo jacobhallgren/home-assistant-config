@@ -15,5 +15,3 @@ class HelloWorld(hass.Hass):
 
 
 print ("hello")
-
-#test
