@@ -7,3 +7,5 @@ class Shelly(hass.Hass):
 
   def light_on(self, entity, attribute, kwargs):
     self.toggle("switch.shelly_shplg_s_7ae3b7")
+
+  #test
