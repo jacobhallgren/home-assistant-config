@@ -24,6 +24,12 @@ shelly:
     - all
 
 
+logger:
+  default: error
+#  logs:
+#    custom_components.airthings_wave: debug
+
+
 
 #homekit
 
@@ -79,6 +85,9 @@ light:
       - light.kitchen_small_bench
       
 sensor:
+  - platform: airthings_wave
+    scan_interval: 120
+
   - platform: rest
     name: tvattmaskin_tid_klar
     value_template: '{{ value_json.components.main.washerOperatingState.completionTime.value }}'
