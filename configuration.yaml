@@ -87,6 +87,7 @@ light:
 sensor:
   - platform: airthings_wave
     scan_interval: 120
+    mac: 98:07:2D:9E:FD:98
 
   - platform: rest
     name: tvattmaskin_tid_klar
