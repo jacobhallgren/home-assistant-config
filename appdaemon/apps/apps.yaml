@@ -39,3 +39,7 @@ Kitchen:
 Keyfob:
   module: keyfob
   class: FibaroKeyfob
+
+Aeotec_wallmote:
+  module: wallquad
+  class: AeotecQuad
