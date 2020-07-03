@@ -59,8 +59,7 @@ homekit:
       - media_player.ue55js9005_ue55js9000
       - media_player.samsung_soundbar_hw_j7500
       - light.kitchen_big_bench
-      - light.kitchen_small_bench
-      - cover.rollerblind      
+      - light.kitchen_small_bench     
   entity_config:
    binary_sensor.mailbox:
       linked_battery_sensor: sensor.aeotec_mailbox_sensor_battery_level
@@ -79,10 +78,10 @@ homeassistant:
 
 light:
   - platform: group
-    name: kitchen_bench
+    name: Kitchen bench
     entities:
-      - light.kitchen_big_bench
-      - light.kitchen_small_bench
+      - light.big_bench
+      - light.small_bench
       
 sensor:
   - platform: airthings_wave
