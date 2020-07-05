@@ -68,20 +68,23 @@ homekit:
 verisure:
   username: !secret verisureuser
   password: !secret verisurepass
+
+litter_robot:
+  username: !secret litteruser
+  password: !secret litterpass
+  scan_interval: 120
   
  #Led strip support
  
 homeassistant:
   customize: !include customize.yaml
   
-  
-
 light:
   - platform: group
     name: Kitchen bench
     entities:
       - light.big_bench
-      - light.small_bench
+      - light.small_bench  
       
 sensor:
   - platform: airthings_wave
