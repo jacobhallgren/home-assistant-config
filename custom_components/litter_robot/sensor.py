@@ -91,7 +91,7 @@ class StatusSensor(LitterRobotEntity):
 
     @property
     def icon(self):
-        return 'mdi:flash'
+        return 'mdi:information'
 
     @property
     def name(self):
