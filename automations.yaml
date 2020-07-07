@@ -8,6 +8,15 @@
     event_type: zwave.network_complete_some_dead
   action:
   - service: homekit.start
+
+- alias: Refresh deconz
+  trigger:
+  - platform: homeassistant
+    event: start
+  action:
+  - delay:
+      seconds: 30 
+  - service: deconz.device_refresh
   
   
 # - alias: Turn on washer light when there is movement
