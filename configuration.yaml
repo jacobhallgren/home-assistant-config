@@ -25,13 +25,22 @@ shelly:
   sensors:
     - all
 
-
+fan:
+  - platform: xiaomi_miio_fan
+    name: Xiaomi Smart Fan
+    host: 10.46.2.101
+    token: 694ace493080c8c6a59d725aab70ab0e
 logger:
   default: error
 #  logs:
 #     pydeconz: debug
 #    homeassistant.components.deconz: debug
 #    custom_components.airthings_wave: debug
+
+vacuum:
+  - platform: xiaomi_miio
+    host: 10.46.2.59
+    token: 456136776f4d77414638645754565959
 
 
 
@@ -48,6 +57,7 @@ homekit:
       - cover
       - light
       - alarm_control_panel
+      - fan
    include_entities:
       - sensor.datorrum_temperature
       - sensor.vardagsrum_temperature

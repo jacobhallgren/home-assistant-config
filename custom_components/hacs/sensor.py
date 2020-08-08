@@ -1,8 +1,9 @@
 """Sensor platform for HACS."""
 # pylint: disable=unused-argument
-from integrationhelper import Logger
 from homeassistant.helpers.entity import Entity
-from .hacsbase import Hacs as hacs
+
+from custom_components.hacs.const import DOMAIN, NAME_SHORT, VERSION
+from custom_components.hacs.share import get_hacs
 
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
@@ -15,17 +16,33 @@ async def async_setup_entry(hass, config_entry, async_add_devices):
     async_add_devices([HACSSensor()])
 
 
-class HACSSensor(Entity):
+class HACSDevice(Entity):
+    """HACS Device class."""
+
+    @property
+    def device_info(self):
+        """Return device information about HACS."""
+        return {
+            "identifiers": {(DOMAIN, self.unique_id)},
+            "name": NAME_SHORT,
+            "manufacturer": "hacs.xyz",
+            "model": "",
+            "sw_version": VERSION,
+            "type": "service",
+        }
+
+
+class HACSSensor(HACSDevice):
     """HACS Sensor class."""
 
     def __init__(self):
         """Initialize."""
         self._state = None
-        self.logger = Logger("hacs.sensor")
         self.repositories = []
 
     async def async_update(self):
         """Update the sensor."""
+        hacs = get_hacs()
         if hacs.system.status.background_task:
             return
 
@@ -34,7 +51,7 @@ class HACSSensor(Entity):
         for repository in hacs.repositories:
             if (
                 repository.pending_upgrade
-                and repository.category in hacs.common.categories
+                and repository.data.category in hacs.common.categories
             ):
                 self.repositories.append(repository)
         self._state = len(self.repositories)
@@ -59,7 +76,7 @@ class HACSSensor(Entity):
     @property
     def icon(self):
         """Return the icon of the sensor."""
-        return "mdi:package"
+        return "hacs:hacs"
 
     @property
     def unit_of_measurement(self):
@@ -69,14 +86,14 @@ class HACSSensor(Entity):
     @property
     def device_state_attributes(self):
         """Return attributes for the sensor."""
-        data = []
+        repositories = []
         for repository in self.repositories:
-            data.append(
+            repositories.append(
                 {
-                    "name": repository.information.full_name,
+                    "name": repository.data.full_name,
                     "display_name": repository.display_name,
-                    "installed version": repository.display_installed_version,
-                    "available version": repository.display_available_version,
+                    "installed_version": repository.display_installed_version,
+                    "available_version": repository.display_available_version,
                 }
             )
-        return {"repositories": data}
+        return {"repositories": repositories}
