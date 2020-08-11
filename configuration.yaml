@@ -28,7 +28,7 @@ shelly:
 fan:
   - platform: xiaomi_miio_fan
     name: Xiaomi Smart Fan
-    host: 10.46.2.101
+    host: 10.46.2.6
     token: 694ace493080c8c6a59d725aab70ab0e
 logger:
   default: error
