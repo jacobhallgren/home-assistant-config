@@ -1,0 +1,37 @@
+{
+    "config": {
+        "title": "Nibe Uplink",
+        "step": {
+            "user": {
+                "title": "Configure Uplink parameters",
+                "description": "Please configure a application on Nibe Uplinks [Application]({application}) page. The redirect url must point to your Home Assistant instance, but does not need to be publically reachable, it need only be reachable from this computer. Ensure it points to the api endpoint ({suffix})",
+                "data": {
+                    "redirect_uri": "Callback URL",
+                    "client_id": "Identifier",
+                    "client_secret": "Secret",
+                    "writeaccess": "Write Access (requires subscription)"
+                }
+            },
+            "auth": {
+                "title": "Authorize home assistant for Nibe",
+                "description": "Please navigate to Nibe Uplink authorization page to authorize Home Assistant",
+                "data": {
+                    "code": "Code included in redirect uri"
+                }
+            },
+            "systems": {
+                "data": {
+                    "systems": "Selected systems"
+                },
+                "description": "Please select which Nibe systems to track",
+                "title": "System selection"
+            }
+        },
+        "error": {
+            "code": "Couldn't get an access token from code. Further information may be in Home Assistant log"
+        },
+        "abort": {
+            "already_configured": "Uplink is already configured"
+        }
+    }
+}
