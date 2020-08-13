@@ -23,12 +23,9 @@ nibe:
     - system: 72824
       units:
         - unit: 0
-      sensors:
-        - outdoor_temperature
-        - 40015
-        - 40029
-      switches:
-        - hot_water_boost
+          categories: true
+    
+
 
 frontend:
   themes: !include_dir_merge_named themes
