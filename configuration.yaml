@@ -110,6 +110,23 @@ light:
       - light.small_bench  
       
 sensor:
+
+  - platform: imap_email_content
+    server: imap.gmail.com
+    scan_interval: 1
+    name: vsuremail
+    port: 993
+    username: !secret gmailacc
+    password: !secret gmailpass
+    senders:
+      - !secret gmailsender
+    value_template: >-
+       {% if 'Avlarmat' in subject %}
+         Disarmed
+       {% elif 'Pålarmat' in subject %}
+         Armed
+       {% endif %}
+
   - platform: airthings_wave
     scan_interval: 120
     mac: 98:07:2D:9E:FD:98
