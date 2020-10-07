@@ -7,14 +7,6 @@ http:
  server_port: 80
  base_url: http://10.46.2.5
 
-camera:
-  - platform: generic
-    name: Streaming Enabled
-    still_image_url: http://192.168.1.51/onvif/snapshot.jpg
-    stream_source: rtsp://admin:JXXFWA@192.168.1.51:554/Streaming/Channels/102
-    username: admin
-    password: JXXFWA
-
 
 # Text to speech
 tts:
@@ -33,7 +25,12 @@ nibe:
       units:
         - unit: 0
           categories: true
-    
+
+camera:
+  - platform: generic
+    name: Streaming Enabled
+    still_image_url: !secret streamstill
+    stream_source: !secret streamurl
 
 
 frontend:
@@ -46,7 +43,7 @@ shelly:
 fan:
   - platform: xiaomi_miio_fan
     name: Xiaomi Smart Fan
-    host: 10.46.2.6
+    host: 10.46.2.45
     token: 694ace493080c8c6a59d725aab70ab0e
 logger:
   default: error
