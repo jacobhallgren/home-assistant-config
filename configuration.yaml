@@ -5,7 +5,7 @@ default_config:
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
 http:
  server_port: 80
- base_url: http://10.46.2.5
+
 
 
 # Text to speech
@@ -28,7 +28,7 @@ nibe:
 
 camera:
   - platform: generic
-    name: Streaming Enabled
+    name: Door
     still_image_url: !secret streamstill
     stream_source: !secret streamurl
 
