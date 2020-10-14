@@ -74,14 +74,6 @@ proxmoxve:
 homekit:
   auto_start: false
   filter:
-   include_domains:
-      - media_player
-      - switch
-      - input_boolean
-      - cover
-      - light
-      - alarm_control_panel
-      - fan
    include_entities:
       - sensor.datorrum_temperature
       - sensor.vardagsrum_temperature
@@ -90,15 +82,34 @@ homekit:
       - binary_sensor.tvattmaskinen_klar_homekit
       - binary_sensor.mailbox
       - camera.streaming_enabled
-   exclude_entities:
-      - switch.fibaro_system_fgs213_switch_switch
-      - switch.allrum
-      - switch.fibaro_system_fgs213_switch_switch_2
-      - switch.fibaro_system_fgs213_switch_switch_3
-      - media_player.ue55js9005_ue55js9000
-      - media_player.samsung_soundbar_hw_j7500
-      - light.kitchen_big_bench
-      - light.kitchen_small_bench     
+      - light.shelly_ceiling_bedroom
+      - light.shelly_window_bedroom
+      - switch.shelly_elfa
+      - cover.rollerblind
+      - switch.shelly_2nd_tv_left
+      - switch.shelly_2nd_tv_right
+      - switch.fibaro_double_switch_tv_2nd_switch
+      - switch.fibaro_double_window_lamp
+      - light.matsal_celing_level
+      - light.ceiling_livingroom_level
+      - light.window_lamp_livingroom_level
+      - light.window_matsal_level
+      - light.tv_bench_level
+      - switch.shelly_sofa_left
+      - switch.shelly_sofa_right
+      - switch.shelly_washer
+      - switch.shelly_wc1st
+      - switch.shelly_wc2nd
+      - switch.shelly_storage
+      - light.kitchen_lamp_level
+      - light.kitchen_bench
+      - light.kitchen_spots
+      - switch.clothes_lamp_switch
+      - switch.clothes_lamp_switch
+      - switch.mirror_light
+      - switch.stair_light_switch
+      - light.shelly_shblb_1_3cc627
+      - light.office_shelf
   entity_config:
    binary_sensor.mailbox:
       linked_battery_sensor: sensor.aeotec_mailbox_sensor_battery_level
