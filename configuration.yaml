@@ -25,6 +25,11 @@ nibe:
       units:
         - unit: 0
           categories: true
+      thermostats: 
+        1:
+          name: Hall
+          current_temperature: sensor.vardagsrum_temperature
+          systems: 1
 
 camera:
   - platform: generic
@@ -81,7 +86,7 @@ homekit:
       - sensor.sovrum_temperature
       - binary_sensor.tvattmaskinen_klar_homekit
       - binary_sensor.mailbox
-      - camera.streaming_enabled
+      - camera.door
       - light.shelly_ceiling_bedroom
       - light.shelly_window_bedroom
       - switch.shelly_elfa
