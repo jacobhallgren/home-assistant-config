@@ -36,7 +36,42 @@ camera:
     name: Door
     still_image_url: !secret streamstill
     stream_source: !secret streamurl
-
+  
+  - platform: xiaomi_cloud_map_extractor
+    host: !secret vacumhost
+    token: !secret vacumtoken
+    username: !secret miuser
+    password: !secret mupass
+    country: "de"
+    name: "My Vacuum Camera"
+    room_colors:
+      1: [240, 178, 122]
+      2: [133, 193, 233]
+      3: [217, 136, 128]
+      4: [52, 152, 219]
+      5: [205, 97, 85]
+      6: [243, 156, 18]
+      7: [88, 214, 141]
+      8: [245, 176, 65]
+      9: [252, 212, 81]
+      10: [72, 201, 176]
+      11: [84, 153, 199]
+      12: [133, 193, 233]
+      13: [245, 176, 65]
+      14: [82, 190, 128]
+      15: [72, 201, 176]
+      16: [165, 105, 18]
+    draw:
+      - charger
+      - path
+      - goto_path
+      - predicted_path
+      - no_go_zones
+      - no_mopping_zones
+      - vacuum_position
+      - virtual_walls
+      - zones
+    auto_update: true
 
 frontend:
   themes: !include_dir_merge_named themes
@@ -44,12 +79,14 @@ frontend:
 shelly:
   sensors:
     - all
-
+   
 fan:
   - platform: xiaomi_miio_fan
-    name: Xiaomi Smart Fan
-    host: 10.46.2.45
-    token: 694ace493080c8c6a59d725aab70ab0e
+    name: Vindy
+    model: zhimi.fan.za4
+    host: 192.168.1.54
+    token: !secret fantoken
+
 logger:
   default: error
 #  logs:
@@ -59,19 +96,9 @@ logger:
 
 vacuum:
   - platform: xiaomi_miio
-    host: 10.46.2.59
-    token: 456136776f4d77414638645754565959
+    host: !secret vacumhost
+    token: !secret vacumtoken
 
-proxmoxve:
-  - host: 10.46.2.2
-    verify_ssl: false
-    realm: pve
-    username: !secret proxuser
-    password: !secret proxpass 
-    nodes:
-        - node: proxmox
-          vms:
-           - 101 
 
 #homekit
 

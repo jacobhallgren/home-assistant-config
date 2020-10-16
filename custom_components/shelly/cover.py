@@ -7,29 +7,48 @@ https://home-assistant.io/components/shelly/
 
 #pylint: disable=import-error
 from homeassistant.components.cover import (ATTR_POSITION,
-                                            CoverDevice, SUPPORT_CLOSE,
+                                            SUPPORT_CLOSE,
                                             SUPPORT_OPEN, SUPPORT_STOP,
                                             SUPPORT_SET_POSITION)
 
-from . import ShellyDevice, get_device_from_hass
+try:
+    from homeassistant.components.cover import CoverEntity
+except:
+    from homeassistant.components.cover import \
+        CoverDevice as CoverEntity
 
+from .device import ShellyDevice
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-def setup_platform(hass, _config, add_devices, discovery_info=None):
-    """Set up the Shelly cover platform."""
-    dev = get_device_from_hass(hass, discovery_info)
-    add_devices([ShellyCover(dev, hass)])
+#def setup_platform(hass, _config, add_devices, discovery_info=None):
+#    """Set up the Shelly cover platform."""
+#    dev = get_device_from_hass(hass, discovery_info)
+#    add_devices([ShellyCover(dev, instance)])
 
-class ShellyCover(ShellyDevice, CoverDevice):
+async def async_setup_entry(hass, _config_entry, async_add_entities):
+    """Set up Shelly cover dynamically."""
+    async def async_discover_cover(dev, instance):
+        """Discover and add a discovered cover."""
+        async_add_entities([ShellyCover(dev, instance)])
+
+    async_dispatcher_connect(
+        hass,
+        "shelly_new_cover",
+        async_discover_cover
+    )
+
+class ShellyCover(ShellyDevice, CoverEntity):
     """Shelly cover device."""
 
-    def __init__(self, dev, hass):
+    def __init__(self, dev, instance):
         """Initialize the cover."""
-        ShellyDevice.__init__(self, dev, hass)
+        ShellyDevice.__init__(self, dev, instance)
         self._position = None
         self._last_direction = None
         self._motion_state = None
         self._support_position = None
         self._state = None
+        self._master_unit = True
         self.update()
 
     @property
@@ -51,13 +70,7 @@ class ShellyCover(ShellyDevice, CoverDevice):
         if self._support_position:
             return self._position == 0
 
-        if self._last_direction == "close":
-            return True
-
-        if self._last_direction == "open":
-            return False
-
-        return False
+        return None
 
     @property
     def is_closing(self):
@@ -87,7 +100,10 @@ class ShellyCover(ShellyDevice, CoverDevice):
 
     def set_cover_position(self, **kwargs):
         """Move the cover to a specific position."""
-        self._dev.set_position(kwargs[ATTR_POSITION])
+        pos = kwargs[ATTR_POSITION]
+        self._dev.set_position(pos)
+        self._position = pos
+        self.schedule_update_ha_state()
 
     def stop_cover(self, **_kwargs):
         """Stop the cover."""
