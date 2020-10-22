@@ -41,7 +41,7 @@ camera:
     host: !secret vacumhost
     token: !secret vacumtoken
     username: !secret miuser
-    password: !secret mupass
+    password: !secret mipass
     country: "de"
     name: "My Vacuum Camera"
     room_colors:
