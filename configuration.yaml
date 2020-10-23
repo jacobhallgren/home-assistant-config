@@ -142,10 +142,15 @@ homekit:
       - switch.stair_light_switch
       - light.shelly_shblb_1_3cc627
       - light.office_shelf
+      - binary_sensor.garageport
   entity_config:
    binary_sensor.mailbox:
       linked_battery_sensor: sensor.aeotec_mailbox_sensor_battery_level
       low_battery_threshold: 31
+   camera.door:
+      support_audio: True
+      #linked_doorbell_sensor: binary_sensor.fibaro_wc_1st_motion_sensor_sensor
+      #video_codec: copy
 #Verisure
 verisure:
   username: !secret verisureuser
