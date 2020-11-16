@@ -79,13 +79,63 @@ frontend:
 shelly:
   sensors:
     - all
-   
+
 fan:
   - platform: xiaomi_miio_fan
     name: Vindy
     model: zhimi.fan.za4
     host: 192.168.1.54
     token: !secret fantoken
+
+  - platform: template
+    fans:
+      kitchen_fan:
+        unique_id: kitchen_fan
+        friendly_name: "Hob Fan"
+        speed_template: "{{ states('sensor.kitchen_fan')|int }}"
+        value_template: >
+          {% if states('sensor.kitchen_fan')|int > 0 -%}
+            on
+          {%- else -%}
+            off
+          {%- endif %}
+        turn_on:
+          - service: shell_command.set_kitchen_fan
+            data_template:
+              value: 5
+          - delay: 2
+          - service: homeassistant.update_entity
+            entity_id: sensor.kitchen_fan
+        turn_off:
+          - service: shell_command.set_kitchen_fan
+            data_template:
+              value: 0
+          - delay: 2
+          - service: homeassistant.update_entity
+            entity_id: sensor.kitchen_fan
+        set_speed:
+          - service: shell_command.set_kitchen_fan
+            data_template:
+              value: "{{ speed }}"
+          - delay: 2
+          - service: homeassistant.update_entity
+            entity_id: sensor.kitchen_fan
+        speeds:
+          - "0"
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "5"
+          - "6"
+          - "7"
+          - "8"
+
+shell_command:
+  set_kitchen_fan: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa pi@192.168.1.57 /home/pi/scripts/set_kitchen_fan.sh {{ value }}
+
+  set_kitchen_fan_light: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa pi@192.168.1.57 /home/pi/scripts/set_kitchen_fan_light.sh {{ value }}
+
 
 logger:
   default: error
@@ -143,6 +193,8 @@ homekit:
       - light.shelly_shblb_1_3cc627
       - light.office_shelf
       - binary_sensor.garageport
+      - light.kitchen_fan_light
+      - fan.kitchen_fan
   entity_config:
    binary_sensor.mailbox:
       linked_battery_sensor: sensor.aeotec_mailbox_sensor_battery_level
@@ -172,6 +224,35 @@ light:
     entities:
       - light.big_bench
       - light.small_bench  
+  - platform: template
+    lights:
+      kitchen_fan_light:
+        unique_id: kitchen_fan_light
+        friendly_name: "Hob"
+        level_template: "{{ states('sensor.kitchen_fan_light')|int }}"
+        value_template: "{{ states('sensor.kitchen_fan_light')|int > 0 }}"
+        turn_on:
+          - service: shell_command.set_kitchen_fan_light
+            data_template:
+              value: 255
+          - delay: 2
+          - service: homeassistant.update_entity
+            entity_id: sensor.kitchen_fan_light
+        turn_off:
+          - service: shell_command.set_kitchen_fan_light
+            data_template:
+              value: 0
+          - delay: 2
+          - service: homeassistant.update_entity
+            entity_id: sensor.kitchen_fan_light
+        set_level:
+          - service: shell_command.set_kitchen_fan_light
+            data_template:
+              value: "{{ brightness }}"
+          - delay: 2
+          - service: homeassistant.update_entity
+            entity_id: sensor.kitchen_fan_light
+  
       
 sensor:
 
@@ -245,6 +326,14 @@ sensor:
       - type: processor_use
       - type: disk_use_percent
         arg: /
+
+  - platform: command_line
+    name: kitchen_fan
+    command: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa pi@192.168.1.57 /home/pi/scripts/get_kitchen_fan.sh"
+
+  - platform: command_line
+    name: kitchen_fan_light
+    command: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa pi@192.168.1.57 /home/pi/scripts/get_kitchen_fan_light.sh"
         
 binary_sensor:
   - platform: template
